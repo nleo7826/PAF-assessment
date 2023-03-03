@@ -1,15 +1,11 @@
 package paf.assessment.repositories;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import paf.assessment.models.Account;
@@ -22,19 +18,23 @@ public class AccountRepository {
     private JdbcTemplate jdbcTemplate;
 
     public List<Account> findAll() {
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(FIND_ALL_ACCOUNTS);
-        List<Account> accounts = new LinkedList<>();
-        while (rowSet.next()) {
-            String accountId = rowSet.getString("account_id");
-            String name = rowSet.getString("name");
-            BigDecimal balance = rowSet.getBigDecimal("balance");
-            Account account = new Account(accountId, name, balance);
-            accounts.add(account);
-
-            System.out.println(account.getAccountId() + " " + account.getName() + " " + account.getBalance());
-        }
+        List<Account> accounts = new ArrayList<>();
+        accounts = jdbcTemplate.query(FIND_ALL_ACCOUNTS, BeanPropertyRowMapper.newInstance(Account.class));
         return accounts;
     }
+
+//     public Boolean save(Account account) {
+//         Integer result = jdbcTemplate.update(insertSQL, account.getFullName(), account.getEmail(), account.getPhone(),
+//                         account.getConfirmationDate(), account.getComments());
+
+//         return result > 0 ? true : false;
+// }
+
+// public Boolean update(RSVP rsvp) {
+//         Integer result = jdbcTemplate.update(updateSQL, rsvp.getFullName(), rsvp.getEmail(), rsvp.getPhone(),
+//                         rsvp.getConfirmationDate(), rsvp.getComments(), rsvp.getId());
+//         return result > 0 ? true : false;
+// }
 
     // public List<Account> findAll() {
     //     List<Account> accounts = jdbcTemplate.query(sql, new AccountRowMapper());
