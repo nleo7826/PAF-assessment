@@ -24,33 +24,35 @@ public class FundsTransferController {
     @RequestParam("amount") BigDecimal amount,
     @RequestParam("comments") String comments, Model model) {
         
-        // String[] payerInfo = payer.split("\\(");
-        // String[] payeeInfo = payee.split("\\(");
         // Retrieve payer and payee accounts from the database
         Account payerAccount = accountRepository.findById(payer);
         Account payeeAccount = accountRepository.findById(payee);
 
+        //C0
         if (payer.isEmpty() || payee.isEmpty()) {
             model.addAttribute("errorMessage", "Payer and payee cannot be empty"); 
             return "index";
         }
 
+        //C1
+        if (payer.length() != 10 || payee.length() != 10) {
+            model.addAttribute("errorMessage", "Invalid account ID"); 
+            return "index";
+        }
+
+        //C2
         if (payer.equals(payee)) {
             model.addAttribute("errorMessage", "Payer and payee cannot be the same"); 
             return "index";
         }
 
-        if (payer.length() != 10 || payee.length() != 10) {
-            model.addAttribute("errorMessage", "Invalid account ID"); 
-            return "index";
-        }
-        //Validate minimum transfer amount 10
-        if (amount.compareTo(new BigDecimal(10)) < 0) {
+        //C3/C4
+        if (amount.compareTo(new BigDecimal(10)) < 0 || amount.equals(BigDecimal.ZERO)) {
             model.addAttribute("errorMessage", "Minimum transfer amount is 10"); 
             return "index";
         }
 
-        //Validate account balance
+        //C5
         BigDecimal payerBalance = payerAccount.getBalance();
         BigDecimal payeeBalance = payeeAccount.getBalance();
 
