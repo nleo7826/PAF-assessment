@@ -36,6 +36,10 @@
           <td></td>
           <td><button type="submit">Transfer</button></td>
         </tr>
+        <tr th:if="${errorMessage}">
+          <td></td>
+          <td style="color: red" th:text="${errorMessage}"></td>
+        </tr>
       </table>
     </form> 
   </body>

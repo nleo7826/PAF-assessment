@@ -26,17 +26,17 @@ public class AccountRepository {
         return accounts;
     }
 
-    public Optional<Account> findByAccountId(String accountId) {
-
-		SqlRowSet rs = jdbcTemplate.queryForRowSet(FIND_ACCOUNT_BY_ID, accountId);
-		if (!rs.next()) {
-			return Optional.empty();
+    // create a find by id method without using the optional
+    public Account findById(String accountId) {
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(FIND_ACCOUNT_BY_ID, accountId);
+        if (!rs.next()) {
+            return null;
         }
         else {
-            Account account = new Account(rs.getString("accountId"),rs.getString("account_name"), rs.getBigDecimal("balance"));
-            return Optional.of(account);
+            return new Account(rs.getString("account_id"),rs.getString("name"), rs.getBigDecimal("balance"));
         }
-	}
+    }
+}
     
 
 //     public Boolean save(Account account) {
@@ -52,4 +52,3 @@ public class AccountRepository {
 //         return result > 0 ? true : false;
 // }
 
-}

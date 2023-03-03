@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import paf.assessment.models.Account;
@@ -18,30 +19,28 @@ public class FundsTransferController {
     private AccountRepository accountRepository;
     
     @PostMapping(path = "/transfer", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleTransferFormSubmission(HttpServletRequest request, Model model) {
-        String payer = request.getParameter("payer");
-        String payee = request.getParameter("payee");
-        BigDecimal amount = new BigDecimal(request.getParameter("amount"));
-        String comments = request.getParameter("comments");
-
-        String[] payerInfo = payer.split(" ");
-        String[] payeeInfo = payee.split(" ");
-
+    public String handleTransferFormSubmission(@RequestParam("payer") String payer,
+    @RequestParam("payee") String payee,
+    @RequestParam("amount") BigDecimal amount,
+    @RequestParam("comments") String comments, Model model) {
+        
+        // String[] payerInfo = payer.split("\\(");
+        // String[] payeeInfo = payee.split("\\(");
         // Retrieve payer and payee accounts from the database
-        Account payerAccount = accountRepository.findByAccountId(payerInfo[1].substring(1, payerInfo[1].length() - 1)).get();
-        Account payeeAccount = accountRepository.findByAccountId(payeeInfo[1].substring(1, payeeInfo[1].length() - 1)).get();
+        Account payerAccount = accountRepository.findById(payer);
+        Account payeeAccount = accountRepository.findById(payee);
 
-        if (payerInfo[0].isEmpty() || payeeInfo[0].isEmpty()) {
+        if (payer.isEmpty() || payee.isEmpty()) {
             model.addAttribute("errorMessage", "Payer and payee cannot be empty"); 
             return "index";
         }
 
-        if (payerInfo[0].equals(payeeInfo[0])) {
+        if (payer.equals(payee)) {
             model.addAttribute("errorMessage", "Payer and payee cannot be the same"); 
             return "index";
         }
 
-        if (payerInfo[1].length() != 12 || payeeInfo[1].length() != 12) {
+        if (payer.length() != 10 || payee.length() != 10) {
             model.addAttribute("errorMessage", "Invalid account ID"); 
             return "index";
         }
