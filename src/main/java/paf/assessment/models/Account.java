@@ -1,12 +1,14 @@
 package paf.assessment.models;
 
+import java.math.BigDecimal;
+
 public class Account {
     
     private String accountId;
     private String name;
-    private Float balance = 2f;
+    private BigDecimal balance;
 
-    public Account(String accountId, String name, Float balance) {
+    public Account(String accountId, String name, BigDecimal balance) {
         this.accountId = accountId;
         this.name = name;
         this.balance = balance;
@@ -28,11 +30,11 @@ public class Account {
         this.name = name;
     }
 
-    public Float getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Float balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

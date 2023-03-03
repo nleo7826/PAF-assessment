@@ -14,13 +14,14 @@ import paf.assessment.repositories.AccountRepository;
 public class IndexController {
     
     @Autowired
-    private AccountRepository accountRepository; // Assuming you have an AccountRepository interface to access the account data
+    private AccountRepository accountRepository;
   
     @GetMapping("/")
     public String showTransferForm(Model model) {
       List<Account> accounts = accountRepository.findAll(); // Fetch all accounts from the database
-      model.addAttribute("accounts", accounts); // Add the accounts to the model
-      return "transfer-form"; // Return the name of the Thymeleaf template file
+      System.out.println(accounts);
+      model.addAttribute("accounts", accounts);
+      return "index";
     }
   
     @PostMapping("/transfer")

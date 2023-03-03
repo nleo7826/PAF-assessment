@@ -7,7 +7,7 @@ USE acme_bank;
 CREATE TABLE accounts (
     account_id VARCHAR(10) NOT NULL,
     name VARCHAR(128),
-    balance DECIMAL(4, 2),
+    balance NUMERIC(19,2),
     PRIMARY KEY (account_id)
 );
 
@@ -18,10 +18,3 @@ INSERT INTO accounts (account_id, name, balance) VALUES
     ('ckTV56axff', 'betty', 1000.00),
     ('Qgcnwbshbh', 'pebbles', 50.00),
     ('if9l185l18', 'bambam', 50.00);
-
-
-
-
-
-
-
