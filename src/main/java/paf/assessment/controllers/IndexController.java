@@ -19,25 +19,16 @@ public class IndexController {
     @Autowired
     private AccountRepository accountRepository;
   
-    @GetMapping(path={"/", ""}, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path={"/", ""})
     public String showTransferForm(Model model) {
-      List<Account> accounts = accountRepository.findAll(); // Fetch all accounts from the database
-      for (Account account : accounts) {
-        System.out.println(account.getAccountId() + " " + account.getName() + " " + account.getBalance());
-      }
+      // Fetch all accounts from the database
+      List<Account> accounts = accountRepository.findAll(); 
+      // for (Account account : accounts) {
+      //   System.out.println(account.getAccountId() + " " + account.getName() + " " + account.getBalance());
+      // }
       model.addAttribute("accounts", accounts);
       return "index";
     }
   
-    @PostMapping(path={"/transfer"}, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String handleTransferFormSubmission(HttpServletRequest request) {
-      String payer = request.getParameter("payer");
-      String payee = request.getParameter("payee");
-      double amount = Double.parseDouble(request.getParameter("quantity"));
-      String comments = request.getParameter("comments");
-  
-      // TODO: Update account balances in the database and handle any errors
-  
-      return "success"; // Return the name of the Thymeleaf template file to display after the transfer is completed
-    }
+      // TODO: Update account balances in the database and handle any error
 }

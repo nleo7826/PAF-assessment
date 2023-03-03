@@ -1,11 +1,14 @@
 package paf.assessment.repositories;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import paf.assessment.models.Account;
@@ -23,6 +26,19 @@ public class AccountRepository {
         return accounts;
     }
 
+    public Optional<Account> findByAccountId(String accountId) {
+
+		SqlRowSet rs = jdbcTemplate.queryForRowSet(FIND_ACCOUNT_BY_ID, accountId);
+		if (!rs.next()) {
+			return Optional.empty();
+        }
+        else {
+            Account account = new Account(rs.getString("accountId"),rs.getString("account_name"), rs.getBigDecimal("balance"));
+            return Optional.of(account);
+        }
+	}
+    
+
 //     public Boolean save(Account account) {
 //         Integer result = jdbcTemplate.update(insertSQL, account.getFullName(), account.getEmail(), account.getPhone(),
 //                         account.getConfirmationDate(), account.getComments());
@@ -36,22 +52,4 @@ public class AccountRepository {
 //         return result > 0 ? true : false;
 // }
 
-    // public List<Account> findAll() {
-    //     List<Account> accounts = jdbcTemplate.query(sql, new AccountRowMapper());
-    //     System.out.println("Found " + accounts.size() + " accounts");
-    //     return accounts;
-    // }
-
-    // public class AccountRowMapper implements RowMapper<Account> {
-
-    //     @Override
-    //     public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
-    //         String accountId = rs.getString("account_id");
-    //         String name = rs.getString("name");
-    //         BigDecimal balance = rs.getBigDecimal("balance");
-    //         return new Account(accountId, name, balance);
-    //     }
-    
-    // }
-    
 }
