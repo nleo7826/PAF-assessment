@@ -11,14 +11,6 @@ CREATE TABLE accounts (
     PRIMARY KEY (account_id)
 );
 
--- CREATE TABLE order_status (
---     order_id INT(8) NOT NULL AUTO_INCREMENT,
---     delivery_id INT NOT NULL(128),
---     status VARCHAR(32),
---     status_update DATETIME,
---     PRIMARY KEY (order_id)
--- );
-
 INSERT INTO accounts (account_id, name, balance) VALUES 
     ('V9L3Jd1BBI', 'fred', 100.00),
     ('fhRq46Y6vB', 'barney', 300.00),

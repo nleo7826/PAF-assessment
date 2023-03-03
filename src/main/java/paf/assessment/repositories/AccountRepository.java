@@ -31,15 +31,5 @@ public class AccountRepository {
         }
         return accounts;
     }
-
-    private static final class AccountRowMapper implements RowMapper<Account> {
-        @Override
-        public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
-            String accountId = rs.getString("account_id");
-            String name = rs.getString("name");
-            Float balance = rs.getFloat("balance");
-            return new Account(accountId, name, balance);
-        }
-    }
     
 }
